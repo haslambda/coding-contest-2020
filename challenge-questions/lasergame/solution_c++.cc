@@ -8,7 +8,9 @@
 #include <iostream>
 #include <numeric>
 #include <queue>
+#include <set>
 #include <utility>
+#include <vector>
 
 using namespace std;
 
@@ -17,12 +19,30 @@ int H, W, board[MAX_SIZE][MAX_SIZE];
 pair<int, char> dp[MAX_SIZE][MAX_SIZE];
 bool solved[MAX_SIZE][MAX_SIZE];
 
-bool check_solvable(int y, int x) {
-  bool vert = false, horiz = false;
-  if (y == H - 1 && x == W - 1) return true;
-  if (y < H - 1 && board[y][x] != -999) vert = check_solvable(y + 1, x);
-  if (x < W - 1 && board[y][x] != -999) horiz = check_solvable(y, x + 1);
-  return vert || horiz;
+inline bool available(pair<int, int> pos) {
+  return 0 <= pos.first && pos.first < H && 0 <= pos.second && pos.second < W &&
+         board[pos.first][pos.second] != -999;
+}
+
+bool check_solvable() {
+  queue<pair<int, int>> q;
+  set<pair<int, int>> visited;
+  visited.insert({0, 0});
+  q.push({0, 0});
+  while (!q.empty()) {
+    auto u = q.front();
+    q.pop();
+    vector<pair<int, int>> nextpos;
+    if (u != make_pair(0, 0)) nextpos.push_back({u.first + 1, u.second});
+    nextpos.push_back({u.first, u.second + 1});
+    for (int i = 0; i < 2; ++i) {
+      if (available(nextpos[i]) && visited.count(nextpos[i]) == 0) {
+        visited.insert(nextpos[i]);
+        q.push(nextpos[i]);
+      }
+    }
+  }
+  return visited.count({H - 1, W - 1}) == 1;
 }
 
 int solve(int y, int x) {
@@ -58,7 +78,7 @@ int main() {
   cin >> H >> W;
   for (int y = 0; y < H; ++y)
     for (int x = 0; x < W; ++x) cin >> board[y][x];
-  if (check_solvable(0, 1)) {
+  if (check_solvable()) {
     int result = solve(0, 0);
     cout << result << '\n';
     print_mirror_pos();
