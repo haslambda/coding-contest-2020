@@ -6,7 +6,6 @@
 #include <cstring>
 #include <ios>
 #include <iostream>
-#include <numeric>
 #include <queue>
 #include <set>
 #include <utility>
@@ -14,7 +13,7 @@
 
 using namespace std;
 
-const int MAX_SIZE = 1001, BARRIER_VAL = -999;
+const int MAX_SIZE = 1001, BARRIER_VAL = -999, NEGINF = -987654321;
 int H, W, board[MAX_SIZE][MAX_SIZE];
 pair<int, char> dp[MAX_SIZE][MAX_SIZE];
 bool solved[MAX_SIZE][MAX_SIZE];
@@ -49,7 +48,7 @@ int solve(int y, int x) {
   auto& ret = dp[y][x];
   if (solved[y][x]) return ret.first;
   if (y == H - 1 && x == W - 1) return 0;
-  int vert = numeric_limits<int>::min(), horiz = numeric_limits<int>::min();
+  int vert = NEGINF, horiz = NEGINF;
   if (y < H - 1 && !(y == 0 && x == 0) && board[y][x] != -999)
     vert = solve(y + 1, x) + board[y][x];
   if (x < W - 1 && board[y][x] != -999) horiz = solve(y, x + 1) + board[y][x];
