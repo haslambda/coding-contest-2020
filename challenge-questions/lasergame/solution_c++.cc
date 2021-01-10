@@ -35,7 +35,7 @@ bool check_solvable() {
     vector<pair<int, int>> nextpos;
     if (u != make_pair(0, 0)) nextpos.push_back({u.first + 1, u.second});
     nextpos.push_back({u.first, u.second + 1});
-    for (int i = 0; i < 2; ++i) {
+    for (int i = 0; i < nextpos.size(); ++i) {
       if (available(nextpos[i]) && visited.count(nextpos[i]) == 0) {
         visited.insert(nextpos[i]);
         q.push(nextpos[i]);
