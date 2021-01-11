@@ -3,7 +3,6 @@ lasergame solution
 """
 from collections import deque
 from math import inf
-from pprint import pprint
 from sys import exit, stdin
 
 infast = lambda: stdin.readline().strip()
