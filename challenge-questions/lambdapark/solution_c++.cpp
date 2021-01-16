@@ -1,5 +1,4 @@
 #include <stdio.h>
-using namespace std;
 
 int main() {
     int children;
@@ -15,7 +14,7 @@ int main() {
     }
 
     int total = 10000 * adults + 8000 * children;
-    total = total * (100 - discount) / discount;
+    total = total * (100 - discount) / 100;
     printf("%d", total);
     return 0;
 }
