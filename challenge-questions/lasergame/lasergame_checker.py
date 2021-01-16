@@ -1,16 +1,20 @@
 """
 lasergame_checker.py -- check answers
 """
-def check(process_output: str, judge_output: str, **kwargs):
-    judge_input = str(kwargs['judge_input'])
+def check(process_output: bytes, judge_output: bytes, **kwargs) -> bool:
+    judge_input = kwargs['judge_input'].decode()
+    judge_output_str = judge_output.decode().strip()
+    process_output_str = process_output.decode().strip()
     judge_input_numbers = list(map(int, judge_input.split()))
-    process_score = int(process_output.split()[0])
-    judge_score = int(judge_output.split()[0])
+    if judge_output_str == 'SOHYUN GAVE UP':
+        return judge_output_str == process_output_str
+    process_score = int(process_output_str.split()[0])
+    judge_score = int(judge_output_str.split()[0])
     if process_score != judge_score:
         return False
 
     mirror_coords = []
-    mirror_coords_unprocessed = list(map(int, process_output.split()[1:]))
+    mirror_coords_unprocessed = list(map(int, process_output_str.split()[1:]))
     for i in range(0, len(mirror_coords_unprocessed), 2):
         mirror_coords.append((mirror_coords_unprocessed[i],
                               mirror_coords_unprocessed[i + 1]))
